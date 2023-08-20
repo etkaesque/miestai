@@ -4,9 +4,9 @@ export default {
   data: () => ({
     cityData: "",
     currentCity: "",
-    dataRows: 50,
-    pignationStart: 50,
-    dataSections: [1,2,3,4,5,6,7,8,9,10],
+    dataRows: 25,
+    pignationStart: 1,
+    dataSections: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
     activeSection: 1
     
   }),
@@ -24,14 +24,28 @@ export default {
       const response = await fetch(`https://api.europeana.eu/record/v2/search.json?query=${query}&wskey=${wskey}&rows=${rows}&media=${media}&thumbnail=${thumbnail}&start=${start}&landingpage=${landingpage}&theme=photography`)
       let data  = await response.json()
       console.log(data.items)
+      let goodData = data.items.filter( item =>  !item.edmIsShownBy[0].includes(`limis.lt`))
+      console.log(goodData)
       this.currentCity = cityQuery
-      this.cityData = data.items
+      this.cityData = goodData
     }, 
     changePignationStart(dataSection) {
-      this.pignationStart = this.dataRows * dataSection
-      this.fetchCity(this.currentCity)
-      this.activeSection = dataSection
-    }
+
+      if(dataSection === 1 ) {
+        this.pignationStart = 1
+        this.activeSection = dataSection
+        this.fetchCity(this.currentCity)
+      } else {
+
+        this.pignationStart = this.dataRows * dataSection
+        this.fetchCity(this.currentCity)
+        this.activeSection = dataSection
+
+      }
+
+    }, handleImageError(event) {
+      event.target.style.display = 'none';
+    },
     
   },
   created() {
@@ -89,9 +103,11 @@ export default {
   <section class="city-section">
 
     
-  <div v-for="(item, index) in cityData" :key="index" class="card">
+  <div v-for="(item, index) in cityData" :key="index" class="card" >
 
-  <img class='image' :src="item.edmIsShownBy[0]" alt="" />
+ 
+
+  <img class='image' :src="item.edmIsShownBy[0]" alt=""  />
 
 
   <p v-if="item.title !== undefined">
