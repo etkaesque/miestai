@@ -144,6 +144,12 @@ cursor: pointer;
 
 
 }
+.country {
 
+    width: 100%; 
+    max-width: 800px; 
+    height: auto;
+
+}
 
 </style>
