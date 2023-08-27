@@ -1,6 +1,11 @@
 <script lang="js">
 
+import InteractiveMap from './components/InteractiveMap.vue'
+
 export default {
+  components: {
+    InteractiveMap
+  },
   data: () => ({
     cityData: "",
     currentCity: "",
@@ -48,10 +53,14 @@ export default {
     },
     
   },
-  created() {
-    this.fetchCity('Vilnius')
+  watch: {
+    currentCity(val) {
 
+console.log("watching", val)
+
+}
   }
+  
 }
 
 </script>
@@ -60,19 +69,12 @@ export default {
 
   <header>
 
+   <InteractiveMap @response="(res) => fetchCity(res)"/>
+
     
   <h1 class="app-heading">Miestų archyvas</h1>
 
-  <nav>
-    <ul class="cities">
-      <li><button @click="fetchCity(`Vilnius`)">Vilnius</button></li>
-      <li><button @click="fetchCity(`Kaunas`)">Kaunas</button></li>
-      <li><button @click="fetchCity(`Klaipėda`)">Klaipėda</button></li>
-      <li><button @click="fetchCity(`Šiauliai`)">Šiauliai</button></li>
-      <li><button @click="fetchCity(`Panevėžys`)">Panevėžys</button></li>
-
-    </ul>
-  </nav>
+ 
 
   <div class="pignation-wrap">
     <ul class="pignation">
@@ -224,6 +226,7 @@ export default {
 
   display: flex;
   list-style-type: none;
+  flex-wrap: wrap;
 
 }
 
